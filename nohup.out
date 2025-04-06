@@ -1,0 +1,524 @@
+Watching for file changes with StatReloader
+[04/Apr/2025 10:25:18] code 400, message Bad request version ('4¥$îµ¢M\x12')
+[04/Apr/2025 10:25:18] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 10:25:18] code 400, message Bad request version ('\x8b\x93{§)\x94T\x10_\x8eé\x07}')
+[04/Apr/2025 10:25:18] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 10:25:19] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x06')
+[04/Apr/2025 10:25:19] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 10:25:19] code 400, message Bad request version ('Dó\x17{º')
+[04/Apr/2025 10:25:19] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 10:25:22] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 10:25:23] "GET /static/trolleys_strain.csv HTTP/1.1" 304 0
+[04/Apr/2025 10:25:57] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 10:25:58] "GET /static/css/style.css HTTP/1.1" 200 1285
+Not Found: /favicon.ico
+[04/Apr/2025 10:25:58] "GET /favicon.ico HTTP/1.1" 404 3296
+[04/Apr/2025 10:25:59] "GET /static/trolleys_strain.csv HTTP/1.1" 200 3235371
+[04/Apr/2025 10:27:11] "POST /predict-output/ HTTP/1.1" 200 92
+[04/Apr/2025 10:27:25] "POST /predict-output/ HTTP/1.1" 200 92
+[04/Apr/2025 10:27:26] "POST /predict-output/ HTTP/1.1" 200 92
+[04/Apr/2025 10:27:27] "POST /predict-output/ HTTP/1.1" 200 92
+[04/Apr/2025 10:27:35] "POST /predict-output/ HTTP/1.1" 200 123
+[04/Apr/2025 10:27:42] "POST /predict-output/ HTTP/1.1" 200 128
+[04/Apr/2025 10:27:52] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:27:54] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:28:24] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:28:39] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:28:40] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:28:45] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:28:47] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:28:49] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:08] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:11] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:12] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:12] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:20] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:26] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:27] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:28] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:35] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:36] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:36] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:29:50] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:30:07] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:30:26] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:30:38] "POST /predict-output/ HTTP/1.1" 200 106
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+April 04, 2025 - 10:24:39
+Django version 5.2, using settings 'hospital_strain_prediction.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                           0  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                        1000  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                        1000  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                        1000  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          25  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          25  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                        1000  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                        1000  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                           1  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                          15  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                           9  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                           3  ...                    High
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                           3  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+   Surge Capacity in Use (Full report @14:00)  ...  Predicted Strain Level
+0                                           0  ...                Moderate
+
+[1 rows x 5 columns]
+Model and preprocessors loaded successfully.
+
+Real-World Data with Predictions:
+[04/Apr/2025 10:30:39] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:30:45] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:30:50] "POST /predict-output/ HTTP/1.1" 200 106
+[04/Apr/2025 10:31:02] "POST /predict-output/ HTTP/1.1" 200 137
+[04/Apr/2025 10:31:14] "POST /predict-output/ HTTP/1.1" 200 102
+[04/Apr/2025 10:33:35] "POST /predict-output/ HTTP/1.1" 200 128
+[04/Apr/2025 10:33:35] "GET /static/trolleys_strain.csv HTTP/1.1" 304 0
+[04/Apr/2025 10:40:42] "POST /predict-output/ HTTP/1.1" 200 145
+[04/Apr/2025 10:40:57] "POST /predict-output/ HTTP/1.1" 200 145
+[04/Apr/2025 10:44:44] "POST /predict-output/ HTTP/1.1" 200 127
+[04/Apr/2025 10:44:44] "GET /static/trolleys_strain.csv HTTP/1.1" 304 0
+[04/Apr/2025 10:45:26] "POST /predict-output/ HTTP/1.1" 200 127
+[04/Apr/2025 10:45:29] "POST /predict-output/ HTTP/1.1" 200 127
+[04/Apr/2025 10:48:15] code 400, message Bad request syntax ('\x16\x03\x01\x01')
+[04/Apr/2025 10:48:15] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 10:48:16] code 400, message Bad request syntax ('\x16\x03\x01\x01')
+[04/Apr/2025 10:48:16] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 11:04:37,911] - Broken pipe from ('69.164.217.74', 48483)
+[04/Apr/2025 11:04:42] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 11:04:45,553] - Broken pipe from ('69.164.217.74', 48484)
+[04/Apr/2025 11:04:48] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 11:21:28] "GET / HTTP/1.0" 200 19402
+Not Found: /robots.txt
+[04/Apr/2025 13:12:24] "GET /robots.txt HTTP/1.1" 404 3286
+[04/Apr/2025 13:12:24] code 400, message Bad request version ('#-"')
+[04/Apr/2025 13:12:24] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 13:12:24] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x03\x00§\x01\x00\x00£\x03\x03gïÚ¸\x9f½')
+[04/Apr/2025 13:12:24] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 13:12:24] code 400, message Bad request syntax ("\x16\x03\x03\x00§\x01\x00\x00£\x03\x03gïÚ¸ÉÔ\x8eClòóëþ¦¶Òª¬Å\x12P´ù×\x12À\x81Kä\x0e\x081\x00\x00$À,À+À0À/À$À#À(À'À")
+[04/Apr/2025 13:12:24] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 13:12:24] code 400, message Bad request version ('\x00\x1a\x00\x18\x08\x04\x08\x05\x08\x06\x04\x01\x05\x01\x02\x01\x04\x03\x05\x03\x02\x03\x02\x02\x06\x01\x06\x03\x00#\x00\x00\x00')
+[04/Apr/2025 13:12:24] You're accessing the development server over HTTPS, but it only supports HTTP.
+Not Found: /robots.txt
+[04/Apr/2025 13:12:26] "GET /robots.txt HTTP/1.1" 404 3288
+[04/Apr/2025 13:12:31] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 13:12:31] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x01D\x01\x00\x01@\x03\x03,µ\x84g9à6\x88\x8e\x00O9ms\x9dîåÉ>äìêßO1\x18Ù³5Cû')
+[04/Apr/2025 13:12:31] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 13:12:32] "GET /static/css/style.css HTTP/1.1" 200 1285
+[04/Apr/2025 13:12:33] "GET /static/trolleys_strain.csv HTTP/1.1" 200 3235371
+[04/Apr/2025 13:12:36] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 13:12:38] "GET /static/css/style.css HTTP/1.1" 200 1285
+[04/Apr/2025 13:12:40] "GET /static/trolleys_strain.csv HTTP/1.1" 200 3235371
+[04/Apr/2025 13:56:25] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 14:22:14] "GET / HTTP/1.0" 200 19402
+[04/Apr/2025 15:07:47] "GET / HTTP/1.0" 200 19402
+[04/Apr/2025 17:24:43] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x8c»É&ê1|szsE¯´\x8dN±\x90\x04)Áz¯Ñ9¦\x80è\x80')
+[04/Apr/2025 17:24:43] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 17:24:43] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x16ò\x8ahm¾L\x8f¹Ý<\x1bÌ£Ã,\x07õ9\x96Fré¿Ú9qÀ\x90Ù^ì\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À")
+[04/Apr/2025 17:24:43] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 19:55:47] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 20:02:31] code 400, message Bad request version ('À\x14À')
+[04/Apr/2025 20:02:31] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 20:06:36] "GET / HTTP/1.0" 200 19402
+[04/Apr/2025 20:16:10,167] - Broken pipe from ('206.168.34.197', 49030)
+[04/Apr/2025 20:16:13] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 20:16:14,555] - Broken pipe from ('206.168.34.197', 49046)
+[04/Apr/2025 20:16:19] "GET / HTTP/1.1" 200 19402
+Not Found: /favicon.ico
+[04/Apr/2025 20:16:21] "GET /favicon.ico HTTP/1.1" 404 3294
+[04/Apr/2025 20:16:23] code 505, message Invalid HTTP version (2.0)
+[04/Apr/2025 20:16:23] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[04/Apr/2025 20:16:32] "GET /favicon.ico HTTP/1.1" 404 3294
+[04/Apr/2025 20:16:35] code 400, message Bad request version ('À\x14À')
+[04/Apr/2025 20:16:35] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 20:21:57] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 20:22:33] code 400, message Bad request version ("¬Ýý*\x864÷ÇB\x03Ò\x15\x10\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+[04/Apr/2025 20:22:33] You're accessing the development server over HTTPS, but it only supports HTTP.
+[04/Apr/2025 21:23:03] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 21:23:03,327] - Broken pipe from ('148.113.214.206', 58624)
+[04/Apr/2025 21:24:11] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 23:15:02] "GET / HTTP/1.1" 200 19402
+[04/Apr/2025 23:15:02] "GET /static/css/style.css HTTP/1.1" 304 0
+[04/Apr/2025 23:15:03] "GET /static/trolleys_strain.csv HTTP/1.1" 304 0
+Not Found: /favicon.ico
+[04/Apr/2025 23:15:03] "GET /favicon.ico HTTP/1.1" 404 3296
+[04/Apr/2025 23:40:11] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 00:21:54] "GET / HTTP/1.0" 200 19402
+[05/Apr/2025 01:26:23] code 400, message Bad request version ('À\x14À')
+[05/Apr/2025 01:26:23] You're accessing the development server over HTTPS, but it only supports HTTP.
+[05/Apr/2025 01:26:23] code 400, message Bad request version ('À\x14À')
+[05/Apr/2025 01:26:23] You're accessing the development server over HTTPS, but it only supports HTTP.
+[05/Apr/2025 01:26:23] "GET / HTTP/1.1" 200 19402
+Not Found: /login
+[05/Apr/2025 01:26:23] "GET /login HTTP/1.1" 404 3276
+[05/Apr/2025 05:08:57] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 05:09:18] "GET /admin/ HTTP/1.1" 302 0
+[05/Apr/2025 05:09:18] code 400, message Bad request version ('À\x14À')
+[05/Apr/2025 05:09:18] You're accessing the development server over HTTPS, but it only supports HTTP.
+Not Found: /api/session/properties
+[05/Apr/2025 05:10:01] "GET /api/session/properties HTTP/1.1" 404 3327
+Not Found: /ext-js/app/common/zld_product_spec.js
+[05/Apr/2025 05:10:17] "GET /ext-js/app/common/zld_product_spec.js HTTP/1.1" 404 3372
+[05/Apr/2025 05:10:18] "GET / HTTP/1.1" 200 19402
+Not Found: /console
+[05/Apr/2025 05:10:18] "GET /console HTTP/1.1" 404 3282
+Not Found: /owncloud/status.php
+[05/Apr/2025 05:10:35] "GET /owncloud/status.php HTTP/1.1" 404 3318
+Not Found: /status.php
+[05/Apr/2025 05:10:52] "GET /status.php HTTP/1.1" 404 3291
+Not Found: /helpdesk/WebObjects/Helpdesk.woa
+[05/Apr/2025 05:11:09] "GET /helpdesk/WebObjects/Helpdesk.woa HTTP/1.1" 404 3357
+[05/Apr/2025 05:14:59] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 07:17:08] code 400, message Bad request version ('À\x13À')
+[05/Apr/2025 07:17:08] You're accessing the development server over HTTPS, but it only supports HTTP.
+[05/Apr/2025 08:03:26] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 08:03:26,158] - Broken pipe from ('184.105.247.246', 30959)
+Not Found: /favicon.ico
+[05/Apr/2025 08:04:21] "GET /favicon.ico HTTP/1.1" 404 3294
+Not Found: /http:/api.ipify.org/
+[05/Apr/2025 08:04:43] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[05/Apr/2025 08:05:05] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[05/Apr/2025 10:04:06] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 10:47:48] "GET / HTTP/1.0" 200 19402
+[05/Apr/2025 10:59:25] code 400, message Bad request version ('À\x14À')
+[05/Apr/2025 10:59:25] You're accessing the development server over HTTPS, but it only supports HTTP.
+Not Found: /.env
+[05/Apr/2025 11:19:10] "GET /.env HTTP/1.1" 404 3273
+[05/Apr/2025 11:55:59] code 400, message Bad request syntax ('MGLNDD_34.133.138.237_8000')
+[05/Apr/2025 11:55:59] "MGLNDD_34.133.138.237_8000" 400 -
+[05/Apr/2025 12:30:43] code 400, message Bad request version ('\x00\x9eÌ¨Ìª\x003\x00=\x00\x16À')
+[05/Apr/2025 12:30:43] You're accessing the development server over HTTPS, but it only supports HTTP.
+[05/Apr/2025 12:30:54] "GET / HTTP/1.1" 200 19402
+Not Found: /favicon.ico
+[05/Apr/2025 12:31:13] "GET /favicon.ico HTTP/1.1" 404 3294
+Not Found: /robots.txt
+[05/Apr/2025 12:31:13] "GET /robots.txt HTTP/1.1" 404 3291
+Not Found: /sitemap.xml
+[05/Apr/2025 12:31:14] "GET /sitemap.xml HTTP/1.1" 404 3294
+Not Found: /config.json
+[05/Apr/2025 12:31:16] "GET /config.json HTTP/1.1" 404 3294
+Not Found: /favicon.ico
+[05/Apr/2025 13:27:36] "GET /favicon.ico HTTP/1.1" 404 3296
+[05/Apr/2025 13:27:39] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 13:27:39] "GET /static/css/style.css HTTP/1.1" 304 0
+[05/Apr/2025 13:27:39] "GET /static/trolleys_strain.csv HTTP/1.1" 304 0
+[05/Apr/2025 13:51:14] "POST /train-model/ HTTP/1.1" 200 112
+Not Found: /.env
+[05/Apr/2025 15:18:58] "GET /.env HTTP/1.1" 404 3273
+[05/Apr/2025 15:18:58,816] - Broken pipe from ('103.175.163.104', 47844)
+Not Found: /favicon.ico
+[05/Apr/2025 17:55:51] "GET /favicon.ico HTTP/1.1" 404 3296
+[05/Apr/2025 18:42:36,782] - Broken pipe from ('167.94.145.109', 48298)
+[05/Apr/2025 18:42:40] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 18:42:40,943] - Broken pipe from ('167.94.145.109', 48364)
+[05/Apr/2025 18:42:44] "GET / HTTP/1.1" 200 19402
+Not Found: /favicon.ico
+[05/Apr/2025 18:42:44] "GET /favicon.ico HTTP/1.1" 404 3294
+[05/Apr/2025 18:42:45] code 505, message Invalid HTTP version (2.0)
+[05/Apr/2025 18:42:45] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[05/Apr/2025 18:42:48] "GET /favicon.ico HTTP/1.1" 404 3294
+[05/Apr/2025 18:42:49] code 400, message Bad request version ('À\x14À')
+[05/Apr/2025 18:42:49] You're accessing the development server over HTTPS, but it only supports HTTP.
+[05/Apr/2025 18:43:52] code 400, message Bad request syntax ('JDWP-Handshake')
+[05/Apr/2025 18:43:52] "JDWP-Handshake" 400 -
+[05/Apr/2025 18:50:13] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 19:19:46] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 19:46:26,829] - Broken pipe from ('206.168.34.219', 37014)
+[05/Apr/2025 19:46:29] code 400, message Bad request version ('áÃ')
+[05/Apr/2025 19:46:29] You're accessing the development server over HTTPS, but it only supports HTTP.
+[05/Apr/2025 19:46:47,447] - Broken pipe from ('206.168.34.219', 47842)
+[05/Apr/2025 19:47:09] code 400, message Bad request syntax ('ZG\x00\x00\x00\x05\x00+\x0e\x01\x00')
+[05/Apr/2025 19:47:09] "ZG    + " 400 -
+[05/Apr/2025 19:55:32] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+[05/Apr/2025 19:55:32] "  /*à     Cookie: mstshash=Administr" 400 -
+[05/Apr/2025 21:28:16] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 22:25:59,250] - Broken pipe from ('167.94.146.56', 53526)
+[05/Apr/2025 22:26:02] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 22:26:03,014] - Broken pipe from ('167.94.146.56', 53554)
+[05/Apr/2025 22:26:07] "GET / HTTP/1.1" 200 19402
+Not Found: /favicon.ico
+[05/Apr/2025 22:26:07] "GET /favicon.ico HTTP/1.1" 404 3294
+[05/Apr/2025 22:26:08] code 505, message Invalid HTTP version (2.0)
+[05/Apr/2025 22:26:08] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[05/Apr/2025 22:26:13] "GET /favicon.ico HTTP/1.1" 404 3294
+[05/Apr/2025 22:26:13] code 400, message Bad request version ('À\x14À')
+[05/Apr/2025 22:26:13] You're accessing the development server over HTTPS, but it only supports HTTP.
+Not Found: /robots.txt
+[05/Apr/2025 22:35:43] "GET /robots.txt HTTP/1.1" 404 3288
+[05/Apr/2025 22:35:49] "GET / HTTP/1.1" 200 19402
+[05/Apr/2025 23:29:59] "GET / HTTP/1.1" 200 19402
+Not Found: /robots.txt
+[05/Apr/2025 23:42:52] "GET /robots.txt HTTP/1.1" 404 3286
+[05/Apr/2025 23:42:56] "GET / HTTP/1.1" 200 19402
+Not Found: /.env
+[05/Apr/2025 23:52:24] "GET /.env HTTP/1.1" 404 3273
+Not Found: /.git/config
+[05/Apr/2025 23:52:24] "GET /.git/config HTTP/1.1" 404 3294
+[06/Apr/2025 01:16:00] code 400, message Bad request version ('þ\x7f')
+[06/Apr/2025 01:16:00] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 01:16:00] code 400, message Bad request version ('\x00\x12\x00\x10\x04\x03\x08\x04\x04\x01\x05\x03\x08\x05\x05\x01\x08\x06\x06\x01\x00')
+[06/Apr/2025 01:16:00] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 01:16:00] code 400, message Bad request version ('ø¬ô¾ÝÏE±÷9¢-*\x84<*ÇD@_ÞLûm(ò´\x14C»')
+[06/Apr/2025 01:16:00] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 01:16:00] code 400, message Bad request syntax ('\x16\x03\x01\x06à\x01\x00\x06Ü\x03\x03¶')
+[06/Apr/2025 01:16:00] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 01:16:03] code 400, message Bad request version ('\x00\x02\x01\x00\x00-\x00\x02\x01\x01\x00#\x00\x00Di\x00\x05\x00\x03\x02h2\x00\x05\x00\x05\x01\x00\x00\x00\x00\x00+\x00\x07\x06úú\x03\x04\x03\x03\x00\x1b\x00\x03\x02\x00\x02\x00')
+[06/Apr/2025 01:16:03] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 01:16:03] code 400, message Bad request version ('È^ã')
+[06/Apr/2025 01:16:03] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 01:16:03] code 400, message Bad request version ('ÊÊ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06\x93zz\x00\x00\x003\x04ï\x04í')
+[06/Apr/2025 01:16:03] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 01:16:03] code 400, message Bad request version ('ô»\x88\x8fJ\x96NN')
+[06/Apr/2025 01:16:03] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 01:16:30] "GET / HTTP/1.1" 200 19402
+[06/Apr/2025 01:16:30] "GET /static/css/style.css HTTP/1.1" 200 1285
+Not Found: /favicon.ico
+[06/Apr/2025 01:16:30] "GET /favicon.ico HTTP/1.1" 404 3294
+[06/Apr/2025 01:16:31] "GET /static/trolleys_strain.csv HTTP/1.1" 200 3235371
+[06/Apr/2025 01:22:15] "GET / HTTP/1.1" 200 19402
+[06/Apr/2025 02:02:03] code 400, message Bad request version ("§ÂÖ±®AñdJ\x00(\x13\x02\x13\x01À,À+À0À/À$À#À(À'À")
+[06/Apr/2025 02:02:03] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 02:02:04] code 400, message Bad request version (";¸F&º\x06Ô\x00\x00$À,À+À0À/À$À#À(À'À")
+[06/Apr/2025 02:02:04] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 02:02:04] code 400, message Bad request syntax ('\x16\x03\x03\x00§\x01\x00\x00£\x03\x03gñà\x9c]|óû»\x19!/\x96\x16F]³')
+[06/Apr/2025 02:02:04] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 02:02:04] code 400, message Bad request version ('\x00\x1a\x00\x18\x08\x04\x08\x05\x08\x06\x04\x01\x05\x01\x02\x01\x04\x03\x05\x03\x02\x03\x02\x02\x06\x01\x06\x03\x00#\x00\x00\x00')
+[06/Apr/2025 02:02:04] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 02:02:09] code 400, message Bad request version ("nD\x17\x00,\x13\x02\x13\x01À,À+À0À/\x00\x9f\x00\x9eÀ$À#À(À'À")
+[06/Apr/2025 02:02:09] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 03:50:32] "GET / HTTP/1.1" 200 19402
+Not Found: /favicon.ico
+[06/Apr/2025 03:50:49] "GET /favicon.ico HTTP/1.1" 404 3294
+Not Found: /http:/api.ipify.org/
+[06/Apr/2025 03:50:52] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[06/Apr/2025 03:50:55] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[06/Apr/2025 07:44:28] "GET / HTTP/1.1" 200 19402
+[06/Apr/2025 07:44:39] code 400, message Bad request version ('À\x14À')
+[06/Apr/2025 07:44:39] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 07:45:00] code 400, message Bad request version ('À\x14À')
+[06/Apr/2025 07:45:00] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 07:45:54] code 400, message Bad request syntax ('SSH-2.0-Go')
+[06/Apr/2025 07:45:54] "SSH-2.0-Go" 400 -
+Not Found: /.env
+[06/Apr/2025 07:57:39] "GET /.env HTTP/1.1" 404 3273
+[06/Apr/2025 08:00:51] "GET / HTTP/1.0" 200 19402
+[06/Apr/2025 08:08:42] "GET / HTTP/1.1" 200 19402
+[06/Apr/2025 08:08:42,637] - Broken pipe from ('148.113.214.206', 47508)
+Not Found: /favicon.ico
+[06/Apr/2025 08:23:49] "GET /favicon.ico HTTP/1.1" 404 3294
+Not Found: /favicon.ico
+[06/Apr/2025 08:23:52] "GET /favicon.ico HTTP/1.1" 404 3296
+[06/Apr/2025 08:28:30] "GET / HTTP/1.1" 200 19402
+[06/Apr/2025 08:28:30] "GET /static/trolleys_strain.csv HTTP/1.1" 304 0
+[06/Apr/2025 08:30:39] code 400, message Bad request syntax ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x032¿KGøIBß"\x16ÂS\x9eÏ\x80ù/æ®\x06ü\x88¥F}')
+[06/Apr/2025 08:30:39] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 08:30:40] code 400, message Bad request version ('À(À$À\x14À')
+[06/Apr/2025 08:30:40] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 12:19:23] code 400, message Bad request version ('À\x14À')
+[06/Apr/2025 12:19:23] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 13:32:48] code 400, message Bad request version ('À\x14À')
+[06/Apr/2025 13:32:48] You're accessing the development server over HTTPS, but it only supports HTTP.
+[06/Apr/2025 14:23:40,873] - Broken pipe from ('104.152.52.162', 49350)
+[06/Apr/2025 14:23:41] "GET / HTTP/1.1" 200 19402
+[06/Apr/2025 15:15:27] code 400, message Bad request syntax ('JDWP-Handshake')
+[06/Apr/2025 15:15:27] "JDWP-Handshake" 400 -

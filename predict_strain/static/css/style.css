@@ -1,0 +1,72 @@
+/* General styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #343a40;
+    min-height: 100vh;
+    padding-top: 20px;
+}
+
+.sidebar .nav-link {
+    color: #bbb;
+    font-weight: 500;
+    padding: 12px;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+    display: block;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 5px;
+}
+
+.sidebar .nav-link.active {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Content area */
+.content {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #007bff;
+    font-weight: 700;
+}
+
+/* Navigation and content pane */
+.content-pane {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.active-pane {
+    display: block;
+    opacity: 1;
+}
+
+/* Headings */
+h2 {
+    color: #343a40;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+    }
+}

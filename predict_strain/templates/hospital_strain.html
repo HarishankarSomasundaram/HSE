@@ -1,0 +1,421 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hospital Strain Prediction</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .nav-link {
+            cursor: pointer;
+        }
+        .content-pane {
+            display: none;
+        }
+        .active-pane {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center my-4">Hospital Strain Prediction</h1>
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                             <a class="nav-link active" data-target="visualization">Visualization</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-target="training">Training</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-target="prediction">Prediction</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div id="visualization" class="content-pane active-pane">
+                    <h2>Visualization</h2>
+                    <div id="visualization">
+
+                    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                        <script src="https://d3js.org/d3.v5.min.js"></script>
+
+{#                    <div id="time-series-chart" style="width:100%; height:500px;"></div>#}
+{#                    <script>#}
+{#                        d3.csv("{% static 'trolleys_strain.csv' %}").then(function(data) {#}
+{#                            const filtered = data.filter(row => row.hospital === 'UH Limerick');#}
+{##}
+{#                            // Parse date and values#}
+{#                            filtered.forEach(function(row) {#}
+{#                                row.date = new Date(row.year, row.month - 1, 1); // month-level date#}
+{#                                row["Total Trolleys"] = +row["Total Trolleys"];#}
+{#                            });#}
+{##}
+{#                            const trace = {#}
+{#                                x: filtered.map(row => row.date),#}
+{#                                y: filtered.map(row => row["Total Trolleys"]),#}
+{#                                type: 'scatter',#}
+{#                                mode: 'lines+markers',#}
+{#                                name: 'UH Limerick',#}
+{#                                line: { color: 'orange' }#}
+{#                            };#}
+{##}
+{#                            const layout = {#}
+{#                                title: 'Total Trolleys Over Time - UH Limerick',#}
+{#                                xaxis: { title: 'Date' },#}
+{#                                yaxis: { title: 'Total Trolleys' }#}
+{#                            };#}
+{##}
+{#                            Plotly.newPlot('time-series-chart', [trace], layout);#}
+{#                        });#}
+{#                    </script>#}
+                    <div id="uh-Kerry-chart" style="width:100%; height:500px;"></div>
+
+                    <script>
+                        d3.csv("{% static 'trolleys_strain.csv' %}").then(function(data) {
+                                const today = new Date();
+                                const ninetyDaysAgo = new Date(today);
+                                ninetyDaysAgo.setDate(today.getDate() - 90);
+
+                                // Filter for UH Limerick and last 90 days
+                                const limerickData = data
+                                    .filter(row => row.hospital === 'UH Kerry')
+                                    .filter(row => {
+                                        const rowDate = new Date(row.date);
+                                        return rowDate >= ninetyDaysAgo && rowDate <= today;
+                                    });
+
+                                // Map and parse fields
+                                const dates = [];
+                                const trolleys = [];
+                                const colors = [];
+
+                                limerickData.forEach(row => {
+                                    const trolleyCount = +row["Total Trolleys"];
+                                    dates.push(new Date(row.date));
+                                    trolleys.push(trolleyCount);
+
+                                    if (trolleyCount <= 5) {
+                                        colors.push('green'); // Low
+                                    } else if (trolleyCount <= 16) {
+                                        colors.push('orange'); // Moderate
+                                    } else {
+                                        colors.push('red'); // High
+                                    }
+                                });
+
+                                const trace = {
+                                    x: dates,
+                                    y: trolleys,
+                                    type: 'scatter',
+                                    mode: 'lines+markers',
+                                    marker: {
+                                        color: colors,
+                                        size: 8
+                                    },
+                                    line: {
+                                        color: 'gray' // neutral line color
+                                    },
+                                    name: 'UH Kerry'
+                                };
+
+                                const layout = {
+                                    title: 'UH Kerry - Total Strain (Last 90 Days)',
+                                    xaxis: { title: 'Date' },
+                                    yaxis: { title: 'Strain Level' }
+                                };
+
+                                Plotly.newPlot('uh-Kerry-chart', [trace], layout);
+                            });
+                    </script>
+                </div>
+
+{#                    <div class="chart-container">#}
+{#                        <h4>Hospital Strain Bar Chart</h4>#}
+{#                        <img src="data:image/png;base64,{{ chart_img }}" alt="Hospital Strain Chart" />#}
+{#                    </div>#}
+                </div>
+                <div id="training" class="content-pane">
+                    <h2>Training</h2>
+                    <form id="training-form">
+                        <div class="mb-3">
+                            <label for="model" class="form-label">Select Model</label>
+                            <select id="model" class="form-select">
+                                <option value="random_forest">Random Forest</option>
+                                <option value="logistic_regression">Logistic Regression</option>
+                                <option value="support_vector_classification">Support Vector Classification</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mc_runs" class="form-label">Number of Monte Carlo Runs</label>
+                            <input type="number" id="mc_runs" class="form-control" min="1" value="10">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Train Model</button>
+                    </form>
+                    <div id="training-result" class="mt-4"></div>
+                </div>
+                <div id="prediction" class="content-pane">
+                    <h2>Prediction</h2>
+                    <form id="prediction-form">
+                        <div class="mb-3">
+                            <label for="predict_model" class="form-label">Select Model</label>
+                            <select id="predict_model" class="form-select">
+                                <option value="random_forest">Random Forest</option>
+                                <option value="logistic_regression">Logistic Regression</option>
+                                <option value="support_vector_classification">Support Vector Classification</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="region" class="form-label">Region</label>
+{#                            <select id="region" class="form-select">#}
+{#                                <option value="HSE Dublin & North East">HSE Dublin & North East</option>#}
+{#                                <option value="HSE South West">HSE South West</option>#}
+{#                                <option value="HSE Mid West">HSE Mid West</option>#}
+{#                                <option value="west">West</option>#}
+{#                            </select>#}
+                            <select id="region" class="form-select">
+                                <option value="">Select Region</option>
+                                <option value="HSE Dublin & North East">HSE Dublin & North East</option>
+                                <option value="HSE Dublin & Midlands">HSE Dublin & Midlands</option>
+                                <option value="HSE Dublin & South East">HSE Dublin & South East</option>
+                                <option value="HSE South West">HSE South West</option>
+                                <option value="HSE Mid West">HSE Mid West</option>
+                                <option value="HSE West & North West">HSE West & North West</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="hospital" class="form-label">Hospital</label>
+                            <select id="hospital" class="form-select">
+{#                                <option value="Connolly Hospital">Connolly Hospital</option>#}
+{#                                <option value="Cork University Hospital">Cork University Hospital</option>#}
+{#                                <option value="UH Limerick">UH Limerick</option>#}
+                                <option value="">Select Hospital</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" id="date" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="surge_capacity" class="form-label">Surge Capacity in Use</label>
+                            <input type="number" id="surge_capacity" class="form-control" min="0" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="delayed_transfers" class="form-label">Delayed Transfers of Care</label>
+                            <input type="number" id="delayed_transfers" class="form-control" min="0" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="waiting_24hrs" class="form-label">No of Total Waiting >24hrs</label>
+                            <input type="number" id="waiting_24hrs" class="form-control"  min="0" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="waiting_75y_24hrs" class="form-label">No of >75+yrs Waiting >24hrs</label>
+                            <input type="number" id="waiting_75y_24hrs" class="form-control"  min="0" value="0">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Predict</button>
+                    </form>
+                    <div id="prediction-result" class="mt-4"></div>
+                    <div id="prediction-chart" style="width:100%; height:500px;"></div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.nav-link').forEach(item => {
+            item.addEventListener('click', function () {
+                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+
+                document.querySelectorAll('.content-pane').forEach(pane => pane.classList.remove('active-pane'));
+                document.getElementById(this.getAttribute('data-target')).classList.add('active-pane');
+            });
+        });
+
+        $(document).ready(function() {
+            const hospitalsByRegion = {
+                "HSE Dublin & North East": [
+                    "Beaumont Hospital", "Cavan General Hospital", "Connolly Hospital",
+                    "Louth County Hospital", "Mater Misericordiae University Hospital",
+                    "National Orthopaedic Hospital Cappagh", "Our Lady of Lourdes Hospital",
+                    "Our Lady's Hospital Navan"
+                ],
+                "HSE Dublin & Midlands": [
+                    "CHI at Crumlin", "CHI at Tallaght", "CHI at Temple Street",
+                    "MRH Mullingar", "MRH Portlaoise", "MRH Tullamore",
+                    "Naas General Hospital", "St. James's Hospital", "St. Luke's Radiation Oncology Network",
+                    "Tallaght University Hospital"
+                ],
+                "HSE Dublin & South East": [
+                    "National Rehabilitation Hospital", "St. Columcille's Hospital",
+                    "St Luke's General Hospital Kilkenny", "St. Michael's Hospital",
+                    "St. Vincent's University Hospital", "Tipperary University Hospital",
+                    "UH Waterford", "Wexford General Hospital"
+                ],
+                "HSE South West": [
+                    "Bantry General Hospital", "Cork University Hospital", "Mallow General Hospital",
+                    "Mercy University Hospital", "South Infirmary Victoria University Hospital", "UH Kerry"
+                ],
+                "HSE Mid West": [
+                    "Ennis Hospital", "Nenagh Hospital", "St. John's Hospital Limerick", "UH Limerick"
+                ],
+                "HSE West & North West": [
+                    "Galway University Hospital", "Letterkenny University Hospital",
+                    "Mayo University Hospital", "Portiuncula University Hospital",
+                    "Roscommon University Hospital", "Sligo University Hospital"
+                ]
+            };
+            // Event listener for region selection
+            $('#region').change(function() {
+                let selectedRegion = $(this).val();
+                let hospitalDropdown = $('#hospital');
+
+                // Clear previous options
+                hospitalDropdown.empty();
+                hospitalDropdown.append('<option value="">Select Hospital</option>');
+
+                // Populate hospitals based on selected region
+                if (selectedRegion in hospitalsByRegion) {
+                    hospitalsByRegion[selectedRegion].forEach(hospital => {
+                        hospitalDropdown.append(`<option value="${hospital}">${hospital}</option>`);
+                    });
+                }
+            });
+            $('#training-form').submit(function(event) {
+                event.preventDefault();
+
+                let model = $('#model').val();
+                let mc_runs = $('#mc_runs').val();
+
+                $('#training-result').html('<p class="text-info">Training in progress...</p>');
+
+                $.ajax({
+                    url: '/train-model/',
+                    type: 'POST',
+                    data: {
+                        'model': model,
+                        'mc_runs': mc_runs,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        $('#training-result').html('<p class="text-success">Training Complete: ' + response.result + '</p>');
+                    },
+                    error: function() {
+                        $('#training-result').html('<p class="text-danger">Training failed. Please try again.</p>');
+                    }
+                });
+            });
+             $('#prediction-form').submit(function(event) {
+                event.preventDefault();
+
+                let model = $('#predict_model').val();
+                let region = $('#region').val();
+                let hospital = $('#hospital').val();
+                let date = $('#date').val();
+                let surge_capacity = $('#surge_capacity').val();
+                let delayed_transfers = $('#delayed_transfers').val();
+                let waiting_24hrs = $('#waiting_24hrs').val();
+                $.ajax({
+                    url: '/predict-output/',
+                    type: 'POST',
+                    data: {
+                        'model': model,
+                        'region': region,
+                        'hospital': hospital,
+                        'date': date,
+                        'surge_capacity': surge_capacity,
+                        'delayed_transfers': delayed_transfers,
+                        'waiting_24hrs': waiting_24hrs,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'  // Include CSRF token
+                    },
+                    success: function(response) {
+                        $('#prediction-result').html('<p class="text-success">Prediction: ' + response.prediction + '</p>');
+
+
+                        d3.csv("{% static 'trolleys_strain.csv' %}").then(function(data) {
+                                const today = new Date();
+                                const ninetyDaysAgo = new Date(today);
+                                ninetyDaysAgo.setDate(today.getDate() - 90);
+
+                                // Filter for UH Limerick and last 90 days
+                                const limerickData = data
+                                    .filter(row => row.hospital === response.hospital)
+                                    .filter(row => {
+                                        const rowDate = new Date(row.date);
+                                        return rowDate >= ninetyDaysAgo && rowDate <= today;
+                                    });
+
+                                // Map and parse fields
+                                const dates = [];
+                                const trolleys = [];
+                                const colors = [];
+
+                                limerickData.forEach(row => {
+                                    const trolleyCount = +row["Total Trolleys"];
+                                    dates.push(new Date(row.date));
+                                    trolleys.push(trolleyCount);
+
+                                    if (trolleyCount <= 5) {
+                                        colors.push('green'); // Low
+                                    } else if (trolleyCount <= 16) {
+                                        colors.push('orange'); // Moderate
+                                    } else {
+                                        colors.push('red'); // High
+                                    }
+                                });
+
+                                const trace = {
+                                    x: dates,
+                                    y: trolleys,
+                                    type: 'scatter',
+                                    mode: 'lines+markers',
+                                    marker: {
+                                        color: colors,
+                                        size: 8
+                                    },
+                                    line: {
+                                        color: 'gray' // neutral line color
+                                    },
+                                    name: response.hospital
+                                };
+
+                                 const predictedValue = {
+                                    x: [response.date], // Example date for predicted value
+                                    y: [response.value],  // Example predicted trolley count
+                                    type: 'scatter',
+                                    mode: 'markers',
+                                    marker: {
+                                        color: 'blue',
+                                        size: 15 // Larger dot size
+                                    },
+                                    name: 'Predicted'
+                                };
+
+                                const layout = {
+                                    title: response.hospital+' - Total Strain (Last 90 Days)',
+                                    xaxis: { title: 'Date' },
+                                    yaxis: { title: 'Strain Level' }
+                                };
+
+                                Plotly.newPlot('prediction-chart', [trace,predictedValue], layout);
+                            });
+
+                    },
+                    error: function() {
+                        $('#prediction-result').html('<p class="text-danger">Prediction failed. Please try again.</p>');
+                    }
+            });
+            });
+        });
+    </script>
+</body>
+</html>
