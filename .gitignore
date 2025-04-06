@@ -1,1 +1,5 @@
 venv/
+/predict_strain/static/models/feature_names.pkl
+/predict_strain/static/models/le_strain.pkl
+/predict_strain/static/models/rf_model.pkl
+/predict_strain/static/models/scaler.pkl
