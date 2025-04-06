@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: django-app
-          image: harishankarsomasundaram/hse-app:v1
+          image: harishankarsomasundaram/hse-app:latest
           ports:
             - containerPort: 8000
       imagePullSecrets:
