@@ -13,10 +13,17 @@ spec:
         app: hse-app
     spec:
       containers:
-        - name: django-app
+        - name: hse-app
           image: harishankarsomasundaram/hse-app:v1
           ports:
             - containerPort: 8000
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "1Gi"
+            limits:
+              memory: "2Gi"
+              cpu: "4"
       imagePullSecrets:
         - name: hse-secret
 ---
