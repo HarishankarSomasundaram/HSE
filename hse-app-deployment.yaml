@@ -22,8 +22,8 @@ spec:
               memory: "512Mi"
               cpu: "500m"
             limits:
-              memory: "2Gi"
-              cpu: "4"
+              memory: "1Gi"
+              cpu: "2"
       imagePullSecrets:
         - name: hse-secret
 ---
