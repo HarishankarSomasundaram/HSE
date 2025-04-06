@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hse-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hse-app
+  template:
+    metadata:
+      labels:
+        app: hse-app
+    spec:
+      containers:
+        - name: django-app
+          image: harishankarsomasundaram/hse-app:v1
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hse-app-service
+spec:
+  selector:
+    app: hse-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: LoadBalancer
