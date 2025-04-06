@@ -17,6 +17,8 @@ spec:
           image: harishankarsomasundaram/hse-app:v1
           ports:
             - containerPort: 8000
+      imagePullSecrets:
+        - name: hse-secret
 ---
 apiVersion: v1
 kind: Service
