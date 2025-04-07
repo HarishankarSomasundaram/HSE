@@ -234,10 +234,10 @@ def train_model(request):
         result = {
             'result': f'{model_name} trained successfully',
             'metrics': {
-                'accuracy': round(results['accuracy_mean']*100, 3),
-                'precision': round(results['precision_mean']*100, 3),
-                'recall': round(results['recall_mean']*100, 3),
-                'f1_score': round(results['f1_mean']*100, 3)
+                'accuracy': round(results['accuracy_mean']*100, 2),
+                'precision': round(results['precision_mean']*100, 2),
+                'recall': round(results['recall_mean']*100, 2),
+                'f1_score': round(results['f1_mean']*100, 2)
             }
         }
 
