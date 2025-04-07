@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report, accuracy_score,precision_score, recall_score, f1_score
 from numpy import mean, std
 import warnings
 warnings.filterwarnings("ignore")
@@ -229,8 +229,17 @@ def train_model(request):
         joblib.dump(features, BASE_DIR / 'predict_strain/static/models/feature_names.pkl')
 
         model = get_models(model_name)
-        accuracy, std = evaluate_model(model_name, model, mc_runs, X_resampled_scaled_df, y_resampled)
+        results = evaluate_model(model_name, model, mc_runs, X_resampled_scaled_df, y_resampled)
         print("Model and preprocessors saved successfully.")
+        result = {
+            'result': f'{model_name} trained successfully',
+            'metrics': {
+                'accuracy': round(results['accuracy_mean']*100, 3),
+                'precision': round(results['precision_mean']*100, 3),
+                'recall': round(results['recall_mean']*100, 3),
+                'f1_score': round(results['f1_mean']*100, 3)
+            }
+        }
 
         # Simulating training process
         # time.sleep(2)  # Simulate processing delay
@@ -244,25 +253,40 @@ def train_model(request):
         #
         # accuracy = results.get(model, "Unknown Model")
 
-        return JsonResponse({'result': f"{model_name} trained with {mc_runs} MC runs. Accuracy: {accuracy*100:.2f}%. Standard Deviation: {std*100:.2f}%" })
-
+        # return JsonResponse({'result': f"{model_name} trained with {mc_runs} MC runs. Accuracy: {accuracy*100:.2f}%. Standard Deviation: {std*100:.2f}%" })
+        return JsonResponse(result)
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def evaluate_model(model_name, model, mc_runs,  X, y):
-    acc = []
+    acc, prec, rec, f1 = [], [], [], []
+
     for i in range(mc_runs):
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=i, stratify=y)  # Split dataset with different seeds
         dt = model.fit(X_train, y_train)  # Fit the model
         y_pred = dt.predict(X_test)  # Predict
         a = accuracy_score(y_test, y_pred)  # Compute accuracy
         acc.append(a)  # Append accuracy
+        acc.append(accuracy_score(y_test, y_pred))
+        prec.append(precision_score(y_test, y_pred, average='macro', zero_division=0))
+        rec.append(recall_score(y_test, y_pred, average='macro', zero_division=0))
+        f1.append(f1_score(y_test, y_pred, average='macro', zero_division=0))
+
+
     if model_name == 'Random Forest':
         joblib.dump(model, BASE_DIR / 'predict_strain/static/models/rf_model.pkl')
     elif model_name == 'Logistic Regression':
         joblib.dump(model, BASE_DIR / 'predict_strain/static/models/lr_model.pkl')
     elif model_name == 'Support Vector Classification':
         joblib.dump(model, BASE_DIR / 'predict_strain/static/models/svc_model.pkl')
-    return np.mean(acc), np.std(acc)  # Return mean accuracy
+
+
+    return {
+        'accuracy_mean': np.mean(acc),
+        'accuracy_std': np.std(acc),
+        'precision_mean': np.mean(prec),
+        'recall_mean': np.mean(rec),
+        'f1_mean': np.mean(f1)
+    }
 
 # Step 5: Define the models
 def get_models(modelName):

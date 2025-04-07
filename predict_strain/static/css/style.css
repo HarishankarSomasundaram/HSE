@@ -4,6 +4,23 @@ body {
     background-color: #f8f9fa;
 }
 
+
+/* Metrics display */
+#training-result .metrics-table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+#training-result .metrics-table th,
+#training-result .metrics-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+#training-result .metrics-table th {
+    background-color: #f2f2f2;
+}
+
 /* Sidebar */
 .sidebar {
     background-color: #343a40;
