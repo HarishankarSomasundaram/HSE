@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hospital Strain Prediction</title>
+    <title>Hospital Bottleneck Analysis</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -57,7 +57,7 @@
 </head>
 <body>
     <div class="container-fluid">
-        <h1 class="text-center my-4">Hospital Strain Prediction</h1>
+        <h1 class="text-center my-4">Hospital Bottleneck Analysis</h1>
         <div class="row">
             <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
                 <div class="position-sticky">
@@ -99,6 +99,10 @@
                         </select>
                     </div>
                     <div id="uh-kerry-chart" style="width:100%; height:500px;"></div>
+
+                    <!-- New Chart for UH Kerry -->
+                    <h2>UH Kerry - Staff vs Betweenness Centrality (May 2024)</h2>
+                    <div id="uh-kerry-chart2" style="width:100%; height:500px;"></div>
                 </div>
 
                 <!-- Training Pane -->
@@ -206,8 +210,11 @@
         function loadVisualization() {
             d3.csv("{% static 'trolleys_strain.csv' %}").then((data) => {
                 const today = new Date();
-                const ninetyDaysAgo = new Date(today);
-                ninetyDaysAgo.setDate(today.getDate() - 90);
+                {#const ninetyDaysAgo = new Date(today);  #}
+                {#ninetyDaysAgo.setDate(today.getDate() - 90);#}
+
+                const mayStart = new Date('2024-05-01');
+                const mayEnd = new Date('2024-05-31');
 
                 // Populate hospital dropdown if not already done
                 if (!allHospitals.length) {
@@ -224,7 +231,11 @@
                 }
 
                 const selectedHospital = document.getElementById('vis-hospital').value;
-                const hospitalData = data.filter(row => row.hospital === selectedHospital && new Date(row.date) >= ninetyDaysAgo);
+                {#const hospitalData = data.filter(row => row.hospital === selectedHospital && new Date(row.date) >= ninetyDaysAgo);#}
+                const hospitalData = data.filter(row => {
+                    const rowDate = new Date(row.date);
+                    return row.hospital === selectedHospital && rowDate >= mayStart && rowDate <= mayEnd;
+                });
                 const dates = hospitalData.map(row => new Date(row.date));
                 const trolleys = hospitalData.map(row => +row["Total Trolleys"]);
                 const colors = trolleys.map(t => t <= 5 ? 'green' : t <= 16 ? 'orange' : 'red');
@@ -239,11 +250,64 @@
                     name: selectedHospital
                 };
                 const layout = {
-                    title: `${selectedHospital} - Total Strain (Last 90 Days)`,
+                    title: `${selectedHospital} - Total Strain (May 2024)`,
                     xaxis: { title: 'Date' },
                     yaxis: { title: 'Strain Level' }
                 };
                 Plotly.newPlot('uh-kerry-chart', [trace], layout);
+            }).catch(error => console.error('Error loading CSV:', error));
+        }
+
+        function loadGraphVisualization() {
+            d3.csv("{% static 'BetweennessCentrality.csv' %}").then((data) => {
+                 data.forEach(d => {
+                d.Date = new Date(d.Date);
+                d.TotalStaff = +d.TotalStaff;
+                d.BetweennessCentrality = +d.BetweennessCentrality;
+            });
+
+            const careUnits = [...new Set(data.map(d => d.CareUnit))];
+            const traces = [];
+
+            careUnits.forEach(unit => {
+                const unitData = data.filter(d => d.CareUnit === unit);
+
+                traces.push({
+                    x: unitData.map(d => d.Date),
+                    y: unitData.map(d => d.TotalStaff),
+                    name: `${unit} - Staff`,
+                    mode: 'lines+markers',
+                    yaxis: 'y1',
+                    line: { dash: 'solid' },
+                    type: 'scatter'
+                });
+
+                traces.push({
+                    x: unitData.map(d => d.Date),
+                    y: unitData.map(d => d.BetweennessCentrality),
+                    name: `${unit} - Centrality`,
+                    mode: 'lines+markers',
+                    yaxis: 'y2',
+                    line: { dash: 'dash' },
+                    type: 'scatter'
+                });
+            });
+
+            const layout = {
+                {#title: 'UH Kerry: Staff vs Betweenness Centrality (May 2024)',#}
+                xaxis: { title: 'Date' },
+                yaxis: { title: 'Total Staff', side: 'left' },
+                yaxis2: {
+                    title: 'Betweenness Centrality',
+                    overlaying: 'y',
+                    side: 'right'
+                },
+                legend: { orientation: 'h', yanchor: 'bottom', y: 1.1 },
+                template: 'plotly_white',
+                height: 900
+            };
+
+            Plotly.newPlot('uh-kerry-chart2', traces, layout);
             }).catch(error => console.error('Error loading CSV:', error));
         }
 
@@ -361,7 +425,7 @@
                     name: hospital
                 };
                 const layout = {
-                    title: `${hospital} - Total Strain (Last 90 Days)`,
+                    title: `${hospital} - Total Strain (May 2024)`,
                     xaxis: { title: 'Date' },
                     yaxis: { title: 'Strain Level' }
                 };
@@ -460,6 +524,7 @@
         // Initial load
         $(document).ready(function() {
             loadVisualization();
+            loadGraphVisualization();
             setDefaultPredictionDate(); // Set the default date on page load
         });
     </script>
