@@ -65,7 +65,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="#" data-pane="visualization">Visualization</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="display: none;">
                             <a class="nav-link" href="#" data-pane="training">Training</a>
                         </li>
                         <li class="nav-item">
@@ -101,12 +101,12 @@
                     <div id="uh-kerry-chart" style="width:100%; height:500px;"></div>
 
                     <!-- New Chart for UH Kerry -->
-                    <h2>UH Kerry - Staff vs Betweenness Centrality (May 2024)</h2>
-                    <div id="uh-kerry-chart2" style="width:100%; height:500px;"></div>
+{#                    <h2>UH Kerry - Staff vs Betweenness Centrality (May 2024)</h2>#}
+{#                    <div id="uh-kerry-chart2" style="width:100%; height:500px;"></div>#}
                 </div>
 
                 <!-- Training Pane - <to be removed> -->
-                <div id="training" class="content-pane">
+                <div id="training" class="content-pane"  style="display: none;">
                     <h2>Training</h2>
                     <form id="training-form">
                         <div class="mb-3">
@@ -130,14 +130,14 @@
                 <div id="prediction" class="content-pane">
                     <h2>Prediction</h2>
                     <form id="prediction-form">
-                        <div class="mb-3">
-                            <label for="predict_model" class="form-label">Select Model</label>
-                            <select id="predict_model" class="form-select">
-                                <option value="random_forest">Random Forest</option>
-                                <option value="logistic_regression">Logistic Regression</option>
-                                <option value="support_vector_classification">Support Vector Classification</option>
-                            </select>
-                        </div>
+{#                        <div class="mb-3">#}
+{#                            <label for="predict_model" class="form-label">Select Model</label>#}
+{#                            <select id="predict_model" class="form-select">#}
+{#                                <option value="random_forest">Random Forest</option>#}
+{#                                <option value="logistic_regression">Logistic Regression</option>#}
+{#                                <option value="support_vector_classification">Support Vector Classification</option>#}
+{#                            </select>#}
+{#                        </div>#}
                         <div class="mb-3">
                             <label for="region" class="form-label">Region</label>
                             <select id="region" class="form-select" onchange="updateHospitals()">
@@ -156,26 +156,26 @@
                                 <option value="">Select Hospital</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="date" class="form-label">Date</label>
-                            <input type="date" id="date" class="form-control" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="surge_capacity" class="form-label">Surge Capacity in Use</label>
-                            <input type="number" id="surge_capacity" class="form-control" min="0" value="0">
-                        </div>
-                        <div class="mb-3">
-                            <label for="delayed_transfers" class="form-label">Delayed Transfers of Care</label>
-                            <input type="number" id="delayed_transfers" class="form-control" min="0" value="0">
-                        </div>
-                        <div class="mb-3">
-                            <label for="waiting_24hrs" class="form-label">No of Total Waiting >24hrs</label>
-                            <input type="number" id="waiting_24hrs" class="form-control" min="0" value="0">
-                        </div>
-                        <div class="mb-3">
-                            <label for="waiting_75y_24hrs" class="form-label">No of >75+yrs Waiting >24hrs</label>
-                            <input type="number" id="waiting_75y_24hrs" class="form-control" min="0" value="0">
-                        </div>
+{#                        <div class="mb-3">#}
+{#                            <label for="date" class="form-label">Date</label>#}
+{#                            <input type="date" id="date" class="form-control" readonly>#}
+{#                        </div>#}
+{#                        <div class="mb-3">#}
+{#                            <label for="surge_capacity" class="form-label">Surge Capacity in Use</label>#}
+{#                            <input type="number" id="surge_capacity" class="form-control" min="0" value="0">#}
+{#                        </div>#}
+{#                        <div class="mb-3">#}
+{#                            <label for="delayed_transfers" class="form-label">Delayed Transfers of Care</label>#}
+{#                            <input type="number" id="delayed_transfers" class="form-control" min="0" value="0">#}
+{#                        </div>#}
+{#                        <div class="mb-3">#}
+{#                            <label for="waiting_24hrs" class="form-label">No of Total Waiting >24hrs</label>#}
+{#                            <input type="number" id="waiting_24hrs" class="form-control" min="0" value="0">#}
+{#                        </div>#}
+{#                        <div class="mb-3">#}
+{#                            <label for="waiting_75y_24hrs" class="form-label">No of >75+yrs Waiting >24hrs</label>#}
+{#                            <input type="number" id="waiting_75y_24hrs" class="form-control" min="0" value="0">#}
+{#                        </div>#}
                         <button type="submit" class="btn btn-primary">Predict</button>
                     </form>
                     <div id="prediction-result" class="mt-4"></div>
@@ -425,7 +425,7 @@
                     name: hospital
                 };
                 const layout = {
-                    title: `${hospital} - Total Strain (May 2024)`,
+                    title: `${hospital} - Total Strain (Last 90 days)`,
                     xaxis: { title: 'Date' },
                     yaxis: { title: 'Strain Level' }
                 };
