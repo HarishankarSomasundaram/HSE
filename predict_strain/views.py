@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.shortcuts import render
 from django.http import JsonResponse
 import time  # Simulate training delay
@@ -24,6 +26,9 @@ import joblib
 import io
 import base64
 import plotly.express as px
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, TensorDataset
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -92,81 +97,85 @@ def predict_output(request):
             'No of Total Waiting >24hrs': [waiting_24hrs],
             'No of >75+yrs Waiting >24hrs':[waiting_75y_24hrs]
         }
-        df = pd.DataFrame(new_data)
+        file_path = BASE_DIR / 'predict_strain/static/HSE.trolleys.csv'
+        df = pd.read_csv(file_path)
+
+        df = df[
+            (df['region'] == region) &
+            (df['hospital'] == hospital)
+            ].sort_values('date')
+
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        checkpoint = torch.load( BASE_DIR / 'predict_strain/static/models/LSTM/lstm_model.pth', map_location=device, weights_only=False)
+        model = LSTMRegressor(
+            input_size=checkpoint['input_size'],
+            hidden_size=checkpoint['hidden_size'],
+            num_layers=checkpoint['num_layers']
+        ).to(device)
+        model.load_state_dict(checkpoint['model_state_dict'])
+        model.eval()
+
+        scaler = joblib.load( BASE_DIR / 'predict_strain/static/models/LSTM/scaler.pkl')
+
         df['date'] = pd.to_datetime(df['date'])
-        df['day_of_week'] = df['date'].dt.day_name()
-        df['year'] = df['date'].dt.year
-        df['month'] = df['date'].dt.month
-        df.drop('date', axis=1, inplace=True)
+        df.sort_values('date', inplace=True)
+        last_date = df['date'].max()
+        # forecast_dates = [last_date + timedelta(days=i) for i in range(1, 8)]
 
-        if model_name == 'random_forest':
-            model = joblib.load(BASE_DIR / 'predict_strain/static/models/rf_model.pkl')
-        elif model_name == 'logistic_regression':
-            model = joblib.load(BASE_DIR / 'predict_strain/static/models/lr_model.pkl')
-        elif model_name == 'support_vector_classification':
-            model = joblib.load(BASE_DIR / 'predict_strain/static/models/svc_model.pkl')
-        else:
-            model = joblib.load(BASE_DIR / 'predict_strain/static/models/rf_model.pkl')
+        features = ['ED Trolleys', 'Ward Trolleys', 'Surge Capacity in Use (Full report @14:00)',
+                    'Delayed Transfers of Care (As of Midnight)', 'No of >75+yrs Waiting >24hrs']
 
-        scaler_loaded = joblib.load(BASE_DIR / 'predict_strain/static/models/scaler.pkl')
-        le_strain_loaded = joblib.load(BASE_DIR / 'predict_strain/static/models/le_strain.pkl')
-        feature_names = joblib.load(BASE_DIR / 'predict_strain/static/models/feature_names.pkl')
-        print("Model and preprocessors loaded successfully.")
+        df[features] = scaler.transform(df[features])
+        last_seq = df[features].values[-7:].copy()
 
-        df = pd.get_dummies(df, columns=['region', 'hospital', 'day_of_week', 'month', 'year'], dtype=int)
+        predictions = []
+        for _ in range(7):
+            input_tensor = torch.tensor(last_seq, dtype=torch.float32).unsqueeze(0).to(device)
+            with torch.no_grad():
+                pred = model(input_tensor).item()
+            predictions.append(pred)
+            next_input = np.append(last_seq[1:], [[pred] * last_seq.shape[1]], axis=0)
+            last_seq = next_input
 
-        for col in feature_names:
-            if col not in df.columns:
-                df[col] = 0  # Add missing columns with zeros
-        df = df[feature_names]  # Reorder and keep only training features
-
-        X = df[feature_names]
-        X_scaled = scaler_loaded.transform(X)
-
-        # Step 8: Predict with the Loaded Model
-        predictions_encoded = model.predict(X_scaled)
-
-        # Decode predictions back to "Low," "Moderate," "High"
-        predictions = le_strain_loaded.inverse_transform(predictions_encoded)
-
-        df['Predicted Strain Level'] = predictions
-        print("\nReal-World Data with Predictions:")
-        print(df[['Surge Capacity in Use (Full report @14:00)', 'Delayed Transfers of Care (As of Midnight)', 'No of Total Waiting >24hrs',
-                     'No of >75+yrs Waiting >24hrs', 'Predicted Strain Level']])
-        # Note: 'region', 'hospital', etc., are now one-hot encoded, so not shown directly
-
-        # Optional: Probabilities for each class
-        # probabilities = model.predict_proba(X_scaled)
-        # print("\nPrediction Probabilities (High, Low, Moderate):")
-        # for i, prob in enumerate(probabilities):
-        #     print(f"Sample {i + 1}: {dict(zip(le_strain_loaded.classes_, prob.round(3)))}")
-
-        # Simulating prediction process
-        # time.sleep(2)  # Simulate processing delay
-
-        # Dummy prediction logic
-        # prediction_score = round(random.uniform(50, 100), 2)
+        forecast_data = [
+            {
+                "date": (last_date + timedelta(days=i + 1)).strftime('%Y-%m-%d'),
+                "day": (last_date + timedelta(days=i + 1)).strftime('%A'),
+                "value": float(round(pred, 1))  # Rounds to 1 decimal place
+            }
+            for i, pred in enumerate(predictions)
+        ]
 
         response =''
-        if predictions[0] == 'Low':
-            response = '0-5'
-            value = 2.5
-        elif predictions[0] == 'Moderate':
-            response = '6-16'
-            value = 9
-        elif predictions[0] == 'High':
-            response = '17+'
-            value = 22
+        # if predictions[0] == 'Low':
+        #     response = '0-5'
+        #     value = 2.5
+        # elif predictions[0] == 'Moderate':
+        #     response = '6-16'
+        #     value = 9
+        # elif predictions[0] == 'High':
+        #     response = '17+'
+        #     value = 22
         # return JsonResponse({f"Predicted strain level: {predictions[0]} ({response} trolleys approximately)"},safe=False)
         return JsonResponse({
-            "prediction": f"{predictions[0]} ({response} trolleys approximately)",
-            "value": value,
+            "prediction": f"Using LSTM Model",
+            # "value": forecast_data,
             "hospital": hospital,
-            "date":date
+            "date":date,
+            "forecast": forecast_data
         })
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+class LSTMRegressor(nn.Module):
+    def __init__(self, input_size, hidden_size=64, num_layers=2):
+        super().__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_size, 1)
 
+    def forward(self, x):
+        out, _ = self.lstm(x)
+        out = self.fc(out[:, -1, :])  # last time step
+        return out.squeeze()
 def train_model(request):
     if request.method == 'POST':
         model_name = request.POST.get('model').replace('_', ' ').title()

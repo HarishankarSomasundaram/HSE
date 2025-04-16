@@ -435,64 +435,95 @@
 
         // Load prediction chart with colored strip after form submission
         function loadPredictionChart(response) {
-            d3.csv("{% static 'trolleys_strain.csv' %}").then((data) => {
-                const today = new Date();
-                const ninetyDaysAgo = new Date(today);
-                ninetyDaysAgo.setDate(today.getDate() - 90);
+    d3.csv("{% static 'trolleys_strain.csv' %}").then((data) => {
+        const today = new Date();
+        const ninetyDaysAgo = new Date(today);
+        ninetyDaysAgo.setDate(today.getDate() - 90);
 
-                const hospitalData = data.filter(row => row.hospital === response.hospital && new Date(row.date) >= ninetyDaysAgo);
-                const dates = hospitalData.map(row => new Date(row.date));
-                const trolleys = hospitalData.map(row => +row["Total Trolleys"]);
-                const colors = trolleys.map(t => t <= 5 ? 'green' : t <= 16 ? 'orange' : 'red');
+        // Filter hospital data for last 90 days
+        const hospitalData = data.filter(row =>
+            row.hospital === response.hospital &&
+            new Date(row.date) >= ninetyDaysAgo
+        );
 
-                const historicalTrace = {
-                    x: dates,
-                    y: trolleys,
-                    type: 'scatter',
-                    mode: 'lines+markers',
-                    marker: { color: colors, size: 8 },
-                    line: { color: 'gray' },
-                    name: response.hospital
-                };
+        // Prepare historical data
+        const dates = hospitalData.map(row => new Date(row.date));
+        const trolleys = hospitalData.map(row => +row["Total Trolleys"]);
+        const colors = trolleys.map(t => t <= 5 ? 'green' : t <= 16 ? 'orange' : 'red');
 
-                // Determine strain level and color from prediction
-                let strainColor, strainRange;
-                const predictedValue = response.value || trolleys[trolleys.length - 1]; // Fallback to last value if no numeric value
-                if (predictedValue <= 5) {
-                    strainColor = 'green';
-                    strainRange = [0, 5];
-                } else if (predictedValue <= 16) {
-                    strainColor = 'orange';
-                    strainRange = [6, 16];
-                } else {
-                    strainColor = 'red';
-                    strainRange = [17, Math.max(17, predictedValue)]; // Extend upper bound if higher
-                }
+        // Historical trace
+        const historicalTrace = {
+            x: dates,
+            y: trolleys,
+            type: 'scatter',
+            mode: 'lines+markers',
+            marker: { color: colors, size: 8 },
+            line: { color: 'gray' },
+            name: 'Historical Data'
+        };
 
-                // Create a strip (horizontal line) for the predicted strain range
-                const predictedStrip = {
-                    x: [new Date(response.date), new Date(response.date)],
-                    y: strainRange, // Y range for the strip
-                    type: 'scatter',
-                    mode: 'lines',
-                    line: {
-                        color: strainColor,
-                        width: 10, // Thick line to look like a strip
-                        dash: 'solid'
-                    },
-                    name: `Predicted (${response.prediction})`,
-                    opacity: 0.5
-                };
+        // Prepare forecast data
+        const forecastTraces = response.forecast.map(prediction => {
+            const date = new Date(prediction.date);
+            const value = Math.round(prediction.value);
+            let strainColor;
 
-                const layout = {
-                    title: `${response.hospital} - Total Strain (Last 90 Days)`,
-                    xaxis: { title: 'Date' },
-                    yaxis: { title: 'Strain Level' }
-                };
+            if (value <= 5) {
+                strainColor = 'green';
+            } else if (value <= 16) {
+                strainColor = 'orange';
+            } else {
+                strainColor = 'red';
+            }
 
-                Plotly.newPlot('prediction-chart', [historicalTrace, predictedStrip], layout);
-            }).catch(error => console.error('Error loading CSV:', error));
-        }
+            return {
+                x: [date],
+                y: [value],
+                type: 'scatter',
+                mode: 'markers',
+                marker: {
+                    color: strainColor,
+                    size: 12,
+                    symbol: 'diamond'
+                },
+                name: `${date.toLocaleDateString('en-US', { weekday: 'short' })}: ${value.toFixed(1)}`,
+                hoverinfo: 'y+name'
+            };
+        });
+
+        // Add a line connecting forecast points
+        const forecastLine = {
+            x: response.forecast.map(p => new Date(p.date)),
+            y: response.forecast.map(p => p.value),
+            type: 'scatter',
+            mode: 'lines',
+            line: {
+                color: 'rgba(100, 100, 100, 0.5)',
+                width: 1,
+                dash: 'dot'
+            },
+            name: 'Forecast Trend',
+            hoverinfo: 'none'
+        };
+
+        // Combine all traces
+        const allTraces = [historicalTrace, forecastLine, ...forecastTraces];
+
+        const layout = {
+            title: `${response.hospital} - Trolley Forecast (Next 7 Days)`,
+            xaxis: {
+                title: 'Date',
+                range: [ninetyDaysAgo, new Date(response.forecast[6].date)] // Show full range
+            },
+            yaxis: { title: 'Total Trolleys' },
+            showlegend: false,
+            legend: { orientation: 'h', y: -0.2 },
+            hovermode: 'closest'
+        };
+
+        Plotly.newPlot('prediction-chart', allTraces, layout);
+    }).catch(error => console.error('Error loading CSV:', error));
+}
 
         // Set default date to next day after last date in CSV and freeze it
         function setDefaultPredictionDate() {
