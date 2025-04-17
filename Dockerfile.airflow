@@ -1,5 +1,16 @@
 FROM apache/airflow:2.8.1-python3.8
 
+USER root
+RUN apt-get update && apt-get install -y \
+    ghostscript \
+    python3-tk \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Switch back to airflow user
+USER airflow
+
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
