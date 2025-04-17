@@ -29,18 +29,32 @@ import plotly.express as px
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
+from pymongo import MongoClient,errors
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+client = MongoClient('mongodb://mongodb:27017/')
+db = client["HSE"]
+collection = db["trolleys"]
 def predict_strain(request):
     # return HttpResponse("Hello world!")
+    data = list(collection.find())  # Convert the cursor to a list
+    # Convert to DataFrame
+    df = pd.DataFrame(data)
+    file_path = BASE_DIR / 'predict_strain/static/trolleys_strain.csv'
+    df.to_csv(file_path)
     return render(request, 'hospital_strain.html')
 
 # Load CSV file into pandas DataFrame
 def load_csv_data():
-    # Adjust the path to your CSV file
+    data = list(collection.find())  # Convert the cursor to a list
+    # Convert to DataFrame
+    df = pd.DataFrame(data)
     file_path = BASE_DIR / 'predict_strain/static/trolleys_strain.csv'
-    return pd.read_csv(file_path)
+    df.to_csv(file_path)
+    return df
+    # Adjust the path to your CSV file
+    # file_path = BASE_DIR / 'predict_strain/static/trolleys_strain.csv'
+    # return pd.read_csv(file_path)
 
 def create_chart():
     # Load CSV data
@@ -97,8 +111,15 @@ def predict_output(request):
             'No of Total Waiting >24hrs': [waiting_24hrs],
             'No of >75+yrs Waiting >24hrs':[waiting_75y_24hrs]
         }
-        file_path = BASE_DIR / 'predict_strain/static/HSE.trolleys.csv'
-        df = pd.read_csv(file_path)
+
+        # file_path = BASE_DIR / 'predict_strain/static/HSE.trolleys.csv'
+        # df = pd.read_csv(file_path)
+
+        # Retrieve the collection data
+        data = list(collection.find())  # Convert the cursor to a list
+        # Convert to DataFrame
+        df = pd.DataFrame(data)
+        print(df.head())
 
         df = df[
             (df['region'] == region) &

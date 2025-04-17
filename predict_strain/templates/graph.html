@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+      <script src="https://unpkg.com/neovis.js@2.0.2/dist/neovis.js"></script>
+      <style>
+        #viz { width: 100%; height: 600px; }
+      </style>
+    </head>
+    <body>
+      <div id="viz"></div>
+      <script>
+        var config = {
+          containerId: "viz",
+          neo4j: {
+            serverUrl: "bolt://localhost:7687",
+            serverUser: "neo4j",
+            serverPassword: "password"
+          },
+          visConfig: {
+            nodes: {
+              Patient: { caption: "subject_id", color: "#4682B4" },
+              Admission: { caption: "hadm_id", color: "#32CD32" },
+              CareUnit: { caption: "name", color: "#800080" }
+            },
+            relationships: {
+              HAS_ADMISSION: { color: "#000000", thickness: 1 },
+              TRANSFERRED_TO: {
+                color: (rel) => rel.properties.color || "#000000",
+                thickness: (rel) => Math.min(Math.max(rel.properties.waiting_time / 20, 1), 5)
+              }
+            }
+          },
+          labels: {
+            Patient: { label: "Patient" },
+            Admission: { label: "Admission" },
+            CareUnit: { label: "CareUnit" }
+          },
+          relationships: {
+            HAS_ADMISSION: { query: true },
+            TRANSFERRED_TO: { query: true }
+          },
+          initialCypher: "MATCH (p:Patient)-[r1:HAS_ADMISSION]->(a:Admission)-[r2:TRANSFERRED_TO]->(cu:CareUnit) WHERE r2.congestion_level IN ['High', 'Moderate', 'Low'] RETURN p, r1, a, r2, cu ORDER BY r2.congestion_level LIMIT 150"
+        };
+        var viz = new NeoVis(config);
+        viz.render();
+      </script>
+    </body>
+    </html>

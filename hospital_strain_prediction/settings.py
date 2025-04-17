@@ -15,7 +15,7 @@ import os
 
 STATIC_URL = '/static/'
 
-
+MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -33,6 +33,7 @@ SECRET_KEY = 'django-insecure-4di*rcc*2%^5@$=&qb_6_joqm&&&+jd46hz!@s)8phe5*$(c$h
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition

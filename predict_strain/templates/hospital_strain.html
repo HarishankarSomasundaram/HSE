@@ -63,6 +63,9 @@
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
+                            <a class="nav-link" href="#" data-pane="data-collector">Data Collector</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link active" href="#" data-pane="visualization">Visualization</a>
                         </li>
                         <li class="nav-item" style="display: none;">
@@ -75,6 +78,18 @@
                 </div>
             </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                 <!-- Data Collector Pane -->
+                <div id="data-collector" class="content-pane" style="display: none;">
+                    <h2>Data Collector</h2>
+                    <p>Live view of the Airflow data pipeline:</p>
+                    <div style="width:100%; height:700px; border:1px solid #ddd;">
+                        <iframe
+                            src="http://localhost:8080/graph?dag_id=hse_batch_pipeline"
+                            width="100%" height="100%"
+                            frameborder="0" style="border:none;">
+                        </iframe>
+                    </div>
+                </div>
                 <!-- Visualization Pane -->
                 <div id="visualization" class="content-pane active-pane">
                     <h2>Visualization</h2>
@@ -187,15 +202,20 @@
 
     <script>
         // Pane switching
-        document.querySelectorAll('.nav-link').forEach(link => {
+         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                document.querySelectorAll('.content-pane').forEach(p => p.classList.remove('active-pane'));
+                document.querySelectorAll('.content-pane').forEach(p => {
+                    p.classList.remove('active-pane');
+                    p.style.display = 'none';
+                });
                 this.classList.add('active');
-                document.getElementById(this.dataset.pane).classList.add('active-pane');
-                if (this.dataset.pane === 'visualization') loadVisualization();
-                if (this.dataset.pane === 'prediction') loadPredictionPreviewChart();
+                const pane = this.dataset.pane;
+                document.getElementById(pane).classList.add('active-pane');
+                document.getElementById(pane).style.display = 'block';
+                if (pane === 'visualization') loadVisualization();
+                if (pane === 'prediction') loadPredictionPreviewChart();
             });
         });
 
@@ -205,16 +225,21 @@
             details.style.display = details.style.display === 'block' ? 'none' : 'block';
         }
 
+        // Initialize default pane
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('[data-pane="visualization"]').click();
+        });
+
         // Hospital dropdown population and visualization
         let allHospitals = [];
         function loadVisualization() {
-            d3.csv("{% static 'trolleys_strain.csv' %}").then((data) => {
+            d3.csv("{% static 'trolleys_strain.csv' %}?v=" + new Date().getTime()).then((data) => {
                 const today = new Date();
-                {#const ninetyDaysAgo = new Date(today);  #}
-                {#ninetyDaysAgo.setDate(today.getDate() - 90);#}
+                const ninetyDaysAgo = new Date(today);
+                ninetyDaysAgo.setDate(today.getDate() - 90);
 
-                const mayStart = new Date('2024-05-01');
-                const mayEnd = new Date('2024-05-31');
+                {#const mayStart = new Date('2024-05-01');#}
+                {#const mayEnd = new Date('2024-05-31');#}
 
                 // Populate hospital dropdown if not already done
                 if (!allHospitals.length) {
@@ -231,11 +256,10 @@
                 }
 
                 const selectedHospital = document.getElementById('vis-hospital').value;
-                {#const hospitalData = data.filter(row => row.hospital === selectedHospital && new Date(row.date) >= ninetyDaysAgo);#}
-                const hospitalData = data.filter(row => {
-                    const rowDate = new Date(row.date);
-                    return row.hospital === selectedHospital && rowDate >= mayStart && rowDate <= mayEnd;
-                });
+                const hospitalData = data.filter(row => row.hospital === selectedHospital && new Date(row.date) >= ninetyDaysAgo);
+                {#const hospitalData = data.filter(row => {#}
+                {#    const rowDate = new Date(row.date);#}
+                {#    return row.hospital === selectedHospital && rowDate >= mayStart && rowDate <= mayEnd;});#}
                 const dates = hospitalData.map(row => new Date(row.date));
                 const trolleys = hospitalData.map(row => +row["Total Trolleys"]);
                 const colors = trolleys.map(t => t <= 5 ? 'green' : t <= 16 ? 'orange' : 'red');
@@ -244,7 +268,8 @@
                     x: dates,
                     y: trolleys,
                     type: 'scatter',
-                    mode: 'lines+markers',
+                    mode: 'markers',
+                    connectgaps: false,
                     marker: { color: colors, size: 8 },
                     line: { color: 'gray' },
                     name: selectedHospital
@@ -405,7 +430,7 @@
                 return;
             }
 
-            d3.csv("{% static 'trolleys_strain.csv' %}").then((data) => {
+            d3.csv("{% static 'trolleys_strain.csv' %}?v=" + new Date().getTime()).then((data) => {
                 const today = new Date();
                 const ninetyDaysAgo = new Date(today);
                 ninetyDaysAgo.setDate(today.getDate() - 90);
@@ -419,7 +444,8 @@
                     x: dates,
                     y: trolleys,
                     type: 'scatter',
-                    mode: 'lines+markers',
+                    mode: 'markers',
+                    connectgaps: false,
                     marker: { color: colors, size: 8 },
                     line: { color: 'gray' },
                     name: hospital
@@ -435,7 +461,7 @@
 
         // Load prediction chart with colored strip after form submission
         function loadPredictionChart(response) {
-    d3.csv("{% static 'trolleys_strain.csv' %}").then((data) => {
+    d3.csv("{% static 'trolleys_strain.csv' %}?v=" + new Date().getTime()).then((data) => {
         const today = new Date();
         const ninetyDaysAgo = new Date(today);
         ninetyDaysAgo.setDate(today.getDate() - 90);
@@ -456,7 +482,7 @@
             x: dates,
             y: trolleys,
             type: 'scatter',
-            mode: 'lines+markers',
+            mode: 'markers',
             marker: { color: colors, size: 8 },
             line: { color: 'gray' },
             name: 'Historical Data'
@@ -480,7 +506,7 @@
                 x: [date],
                 y: [value],
                 type: 'scatter',
-                mode: 'markers',
+                mode: 'lines+markers',
                 marker: {
                     color: strainColor,
                     size: 12,
@@ -527,7 +553,7 @@
 
         // Set default date to next day after last date in CSV and freeze it
         function setDefaultPredictionDate() {
-            d3.csv("{% static 'trolleys_strain.csv' %}").then((data) => {
+            d3.csv("{% static 'trolleys_strain.csv' %}?v=" + new Date().getTime()).then((data) => {
                 // Get the latest date from the CSV
                 const dates = data.map(row => new Date(row.date));
                 const lastDate = new Date(Math.max(...dates));

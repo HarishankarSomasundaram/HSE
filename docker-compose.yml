@@ -1,0 +1,122 @@
+services:
+  django-app:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Ensure this matches your Dockerfile's name
+    container_name: django-app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    networks:
+      - hse-net
+    environment:
+      - DJANGO_SETTINGS_MODULE=hospital_strain_prediction.settings
+      - MONGO_URI=mongodb://mongo:27017  # accessible via service name
+
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - hse-net
+
+  airflow-webserver:
+    image: apache/airflow:2.8.1
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    depends_on:
+      - postgres
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__FERNET_KEY: '_bIonc-E2OkwgFVY4SZ4uB9IGW5-NACV_WLP_HpY_Qs='
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__WEBSERVER__SECRET_KEY: '341b1c7b-8d87-40b1-8230-27b5792b5854'
+      _AIRFLOW_WWW_USER_USERNAME: airflow
+      _AIRFLOW_WWW_USER_PASSWORD: airflow
+    mem_limit: 2g
+    volumes:
+      - ./dags:/opt/airflow/dags
+    ports:
+      - 8080:8080
+    command: webserver
+    networks:
+      - hse-net
+
+  airflow-scheduler:
+    image: apache/airflow:2.8.1
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    depends_on:
+      - airflow-webserver
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__WEBSERVER__SECRET_KEY: '341b1c7b-8d87-40b1-8230-27b5792b5854'
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./pdfs:/opt/airflow/pdfs
+    command: scheduler
+    mem_limit: 1.5g
+    networks:
+      - hse-net
+
+  kafka:
+    image: bitnami/kafka:3.5.1
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    depends_on:
+      - zookeeper
+    networks:
+      - hse-net
+
+  zookeeper:
+    image: bitnami/zookeeper:3.8
+    ports:
+      - "2181:2181"
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: yes
+    networks:
+      - hse-net
+
+  kafka-producer:
+    build: ./kafka-producer
+    depends_on:
+      - kafka
+    networks:
+      - hse-net
+
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    networks:
+      - hse-net
+    volumes:
+      - ./mongo-seed:/docker-entrypoint-initdb.d
+volumes:
+  postgres_data:
+
+networks:
+  hse-net:
+    driver: bridge
+
