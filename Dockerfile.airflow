@@ -3,15 +3,20 @@ FROM apache/airflow:2.8.1-python3.8
 USER root
 RUN apt-get update && \
     apt-get install -y apt-transport-https ca-certificates curl gnupg && \
+    # Create sources.list if it doesn't exist
+    if [ ! -f /etc/apt/sources.list ]; then \
+        echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list; \
+        echo "deb http://deb.debian.org/debian bullseye-updates main" >> /etc/apt/sources.list; \
+        echo "deb http://deb.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list; \
+    fi && \
     sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list && \
     apt-get update && \
     apt-get install -y \
-    ghostscript \
-    python3-tk \
-    libgl1 \
-    libglib2.0-0 && \
+        ghostscript \
+        python3-tk \
+        libgl1 \
+        libglib2.0-0 && \
     rm -rf /var/lib/apt/lists/*
-
 
 # Switch back to airflow user
 USER airflow
