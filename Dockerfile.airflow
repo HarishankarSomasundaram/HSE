@@ -1,12 +1,17 @@
 FROM apache/airflow:2.8.1-python3.8
 
 USER root
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y apt-transport-https ca-certificates curl gnupg && \
+    sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y \
     ghostscript \
     python3-tk \
     libgl1 \
-    libglib2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
+    libglib2.0-0 && \
+    rm -rf /var/lib/apt/lists/*
+
 
 # Switch back to airflow user
 USER airflow
