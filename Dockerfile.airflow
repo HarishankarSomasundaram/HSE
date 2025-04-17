@@ -5,19 +5,19 @@ RUN apt-get update && \
     apt-get install -y apt-transport-https ca-certificates curl gnupg && \
     # Remove third-party repositories to avoid conflicts
     rm -rf /etc/apt/sources.list.d/* && \
-    # Create sources.list with Bullseye repositories
+    # Set Bullseye repositories
     echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list && \
     echo "deb https://deb.debian.org/debian bullseye-updates main" >> /etc/apt/sources.list && \
     echo "deb https://deb.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list && \
     apt-get update && \
-    # Install Python 3.8 explicitly and hold its version
-    apt-get install -y python3 python3.8 && \
-    apt-mark hold python3 python3.8 && \
+    # Install required packages without specifying Python versions
     apt-get install -y \
         ghostscript \
         python3-tk \
         libgl1 \
         libglib2.0-0 && \
+    # Hold python3 to prevent upgrades
+    apt-mark hold python3 && \
     rm -rf /var/lib/apt/lists/*
 
 # Switch back to airflow user
